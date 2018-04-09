@@ -113,12 +113,14 @@ class DecisionTreeClf:
         min_cost = 1
         decision_var = 0
         decision_val = X[0][0]
-        prev = X[0][0]
+        processed_vals = {} #Maintain a map of <column, [processed values]>
         for i in range(len(X)):
             for k in range(len(X[i])):
-                if (i !=0 or k!=0) and prev == X[i][k] :
-                    continue
-                prev = X[i][k]
+                if processed_vals.get(k,"") == "": #if column is not in map
+                    processed_vals[k] = [] #add column as key, empty list as value 
+                if X[i][k] in processed_vals[k]: #check if the value is processed
+                    continue #and continue
+                processed_vals[k].append(X[i][k]) #add value to processed list
                 #get the all m and g for a tk
                 mLeft, mRight, m, gLeft, gRight = self.getMandG(X, y, X[i][k], k)
                 curr_cost = self.costFunction(mLeft, mRight, m, gLeft, gRight)
@@ -164,7 +166,7 @@ class DecisionTreeClf:
             #Now split the data into Xleft, Yleft and Xright, Yright
             Xleft, Yleft, Xright, Yright = self.splitLeftAndRight(X, y,\
                                       self.decision_var, self.decision_val)
-            #now create the left and rifht sub-trees and for the corresponding data
+            #now create the left and right sub-trees and for the corresponding data
             if len(Xleft) > 0:
                 self.left = DecisionTreeClf(self.max_depth-1)
                 self.left.fit(Xleft, Yleft)

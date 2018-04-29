@@ -117,10 +117,11 @@ class DecisionTreeClf:
         for i in range(len(X)):
             for k in range(len(X[i])):
                 if processed_vals.get(k,"") == "": #if column is not in map
-                    processed_vals[k] = [] #add column as key, empty list as value 
-                if X[i][k] in processed_vals[k]: #check if the value is processed
+                    processed_vals[k] = {} #add column as key, empty dict as value
+                val_dict = processed_vals[k]
+                if val_dict.get(X[i][k], False): #check if the value is processed, returns true if value is in dict else false
                     continue #and continue
-                processed_vals[k].append(X[i][k]) #add value to processed list
+                val_dict[X[i][k]] = True
                 #get the all m and g for a tk
                 mLeft, mRight, m, gLeft, gRight = self.getMandG(X, y, X[i][k], k)
                 curr_cost = self.costFunction(mLeft, mRight, m, gLeft, gRight)
@@ -195,7 +196,7 @@ class DecisionTreeClf:
             if max_ < self.values[i]:
                 max_ = self.values[i]
                 max_ind = i
-        return max_ind
+        return self.classes[max_ind]
         
     def predictClass(self, X_pred_):
         '''

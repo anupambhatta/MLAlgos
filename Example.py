@@ -15,7 +15,7 @@ mytree = DecisionTreeClf(2)
 #Train the tree
 mytree.fit(X_, y_)
 #print the tree
-mytree.printTreeInOrder()
+mytree.printTreePreOrder()
 #test the model
 y_pred = mytree.predict([[5, 1.5]])
 print(y_pred)

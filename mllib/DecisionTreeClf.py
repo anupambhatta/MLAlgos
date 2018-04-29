@@ -174,16 +174,16 @@ class DecisionTreeClf:
                 self.right = DecisionTreeClf(self.max_depth-1)
                 self.right.fit(Xright, Yright)
 
-    def printTreeInOrder(self):
+    def printTreePreOrder(self):
         '''
         Prints the tree in order
         '''
         if self is not None:
             print(self)
         if self.left is not None:
-            self.left.printTreeInOrder()
+            self.left.printTreePreOrder()
         if self.right is not None:
-            self.right.printTreeInOrder()
+            self.right.printTreePreOrder()
    
     def getMaxClass(self):
         '''
